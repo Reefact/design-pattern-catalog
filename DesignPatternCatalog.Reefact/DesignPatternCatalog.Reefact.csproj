@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\build\Packaging.props" />
+  <Import Project="..\build\PublicSurface.props" />
+  <Import Project="..\build\Shims.props" />
+
+  <PropertyGroup>
+    <PackageId>DesignPatternCatalog.Reefact</PackageId>
+
+    <Description>
+      Attributes that let code state which pattern of Reefact a type or a member participates in — the
+      patterns the maintainer uses every day that no catalogued work names, starting with those of
+      Advanced Value Objects in .NET, 2026. The attributes carry no behaviour and no dependency beyond the
+      base marker: they are declarative data, read back by reflection, so a team can build its own
+      inventory, diagram or architecture rules on a shared vocabulary instead of a naming convention. This
+      package is independent of every other catalogue (ADR-0027), so nothing in it refers to a pattern of
+      another work.
+    </Description>
+
+    <PackageTags>value-object;ddd;hydration;encapsulation;design-patterns;living-documentation;architecture;attributes;annotations;documentation;archunit</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DesignPatternCatalog.Core\DesignPatternCatalog.Core.csproj" />
+  </ItemGroup>
+
+
+</Project>

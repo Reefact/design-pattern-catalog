@@ -43,9 +43,10 @@ architecture" from a claim into something a build can check.
 | `MicroservicesPatterns` | 41 | in progress | Richardson — *Microservices Patterns*, 2018 |
 | `Posa2` | 17 | complete | Schmidt, Stal, Rohnert & Buschmann — *Pattern-Oriented Software Architecture, Volume 2*, 2000 |
 | `DependencyInjection` | 11 | complete | van Deursen & Seemann — *Dependency Injection Principles, Practices, and Patterns*, 2019 |
+| `Reefact` | 2 | open-ended | Reefact — *Advanced Value Objects in .NET*, 2026: the maintainer's own patterns, each entered with the text that presents it |
 | `Idioms` | 2 | open-ended | patterns with a source but no catalog of their own — each entry names its own |
 
-**343 patterns, 619 roles** today, and the catalog is meant to grow by an order of
+**345 patterns, 623 roles** today, and the catalog is meant to grow by an order of
 magnitude. *Complete* means every pattern of the work is either held or named in
 [the exclusion tables](catalog/README.md#patterns-deliberately-left-out) with the reason it
 cannot be annotated — so in those eight, a missing pattern is a defect rather than work in
@@ -68,7 +69,8 @@ twenty-three; so is
 and so is
 [Dependency Injection](doc/handwritten/for-users/dependency-injection/README-en.md),
 whose four anti-patterns are where the guide's rule about not inventing is tested
-hardest.
+hardest;
+[Reefact](doc/handwritten/for-users/reefact/README-en.md) is written up whole, both of its patterns.
 [Enterprise Integration Patterns](doc/handwritten/for-users/enterprise-integration/README-en.md)
 is under way — the integration styles, the root patterns, the channels, message
 construction and the twelve routing patterns, forty of sixty-five. It is the largest
@@ -187,7 +189,7 @@ assertions they carry**, never by their names.
 Almost nothing this library decides is defended by the compiler, and the
 attributes are generated from a catalog, so a reader of the output cannot tell a
 decided trait from an incidental one. The reasoning is kept in the
-[ADR base](doc/handwritten/for-maintainers/adr/) — 41 records, English
+[ADR base](doc/handwritten/for-maintainers/adr/) — 43 records, English
 canonical with a French translation alongside — and that is where to look when a
 shape seems arbitrary.
 

@@ -9,6 +9,7 @@ two can never disagree about what a valid entry is. It checks each entry against
 its own:
 
 * every name in a role's `links` is a role of the same pattern;
+* a name in a role's `externalLinks` is neither a role of the pattern nor a link of the same role (ADR-0043);
 * role names are unique within a pattern;
 * `specialisationOf` points at an entry that exists in the SAME catalogue, and a
   declension never derives from a work published later than its own — the
@@ -66,6 +67,15 @@ def main():
                 if link not in names:
                     failures.append(f"{shown}: role {role['name']} links to '{link}', "
                                     f"which is not a role of this pattern")
+
+            taken = set(role.get("links", []))
+            for external in role.get("externalLinks", []):
+                if external["name"] in names:
+                    failures.append(f"{shown}: role {role['name']} has an external link '{external['name']}' "
+                                    f"which is also a role of this pattern — that is a link, not an external link")
+                elif external["name"] in taken:
+                    failures.append(f"{shown}: role {role['name']} declares '{external['name']}' twice")
+                taken.add(external["name"])
 
         target = entry.get("specialisationOf")
         if target is not None:

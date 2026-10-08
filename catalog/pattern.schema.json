@@ -25,8 +25,9 @@
         "EnterpriseIntegration",
         "XUnitTestPatterns",
         "MicroservicesPatterns",
-    "Posa2",
-    "DependencyInjection",
+        "Posa2",
+        "DependencyInjection",
+        "Reefact",
         "Idioms"
       ]
     },
@@ -133,6 +134,31 @@
           "items": {
             "type": "string",
             "pattern": "^[A-Z][A-Za-z0-9]*$"
+          }
+        },
+        "externalLinks": {
+          "description": "Types this role can point at that are NOT roles of the pattern, each generated as an optional typed property. Where a link names a participant of the same occurrence, use `links`; use this where the role has to name a type the pattern does not own — the single caller a member is restricted to, for one.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "summary"
+            ],
+            "properties": {
+              "name": {
+                "description": "The property name, in PascalCase. Must not collide with a role of the pattern or with another link of the same role.",
+                "type": "string",
+                "pattern": "^[A-Z][A-Za-z0-9]*$"
+              },
+              "summary": {
+                "description": "What the type named by this property is, in one sentence. Becomes the XML documentation of the property.",
+                "type": "string",
+                "minLength": 20
+              }
+            }
           }
         }
       }

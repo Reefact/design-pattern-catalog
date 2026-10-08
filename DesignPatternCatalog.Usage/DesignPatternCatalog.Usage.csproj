@@ -21,6 +21,7 @@
     <ProjectReference Include="..\DesignPatternCatalog.MicroservicesPatterns\DesignPatternCatalog.MicroservicesPatterns.csproj" />
     <ProjectReference Include="..\DesignPatternCatalog.Posa2\DesignPatternCatalog.Posa2.csproj" />
     <ProjectReference Include="..\DesignPatternCatalog.DependencyInjection\DesignPatternCatalog.DependencyInjection.csproj" />
+    <ProjectReference Include="..\DesignPatternCatalog.Reefact\DesignPatternCatalog.Reefact.csproj" />
     <ProjectReference Include="..\DesignPatternCatalog.Usage.TrainOperations\DesignPatternCatalog.Usage.TrainOperations.csproj" />
     <ProjectReference Include="..\DesignPatternCatalog.Usage.Invoicing\DesignPatternCatalog.Usage.Invoicing.csproj" />
     <ProjectReference Include="..\DesignPatternCatalog.Usage.RailNetwork\DesignPatternCatalog.Usage.RailNetwork.csproj" />
