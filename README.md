@@ -71,7 +71,7 @@ whose four anti-patterns are where the guide's rule about not inventing is teste
 hardest.
 [Enterprise Integration Patterns](doc/handwritten/for-users/enterprise-integration/README-en.md)
 is under way — the integration styles, the root patterns, the channels, message
-construction and the twelve routing patterns, forty of sixty-five. It is the largest
+construction, routing and transformation, forty-six of sixty-five. It is the largest
 catalogue here and the one the guide will take longest to finish.
 
 ## Installing

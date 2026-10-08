@@ -4,7 +4,7 @@
 
 *Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions* — Gregor
 Hohpe et Bobby Woolf, Addison-Wesley, 2003. Soixante-cinq patrons catalogués, et c'est le plus grand
-catalogue d'ici ; **quarante sont écrits à ce jour**, et les trois chapitres qui manquent encore sont
+catalogue d'ici ; **quarante-six sont écrits à ce jour**, et les deux chapitres qui manquent encore sont
 nommés ci-dessous avec ce qui en tient lieu jusqu'à leur existence.
 
 Ce guide n'est pas l'index du catalogue.
@@ -110,21 +110,30 @@ quand une route devient un processus.
 
 ## La transformation des messages
 
-Pas encore écrits. Envelope Wrapper, Content Enricher, Content Filter, Claim Check, Normalizer,
-Canonical Data Model — six, qui spécialisent [Message Translator](MessageTranslator-fr.md) comme les
-douze ci-dessus spécialisent le routeur. Tous sont catalogués et annotés ; seules leurs pages de guide
-manquent. En attendant qu'elles existent, les
-[entrées d'index](../../../generated/catalog-index.md#enterprise-integration-patterns) et les exemples
-sous
-[`DesignPatternCatalog.Usage/EnterpriseIntegration`](../../../../DesignPatternCatalog.Usage/EnterpriseIntegration)
-sont ce qu'il y a.
+Ce que devient [Message Translator](MessageTranslator-fr.md) quand le changement dépasse un format. Deux
+sont opposés — l'un ajoute ce qui manquait à l'émetteur, l'autre retire ce que le receveur ne veut pas.
+Deux changent la taille d'un message en sens contraires. Deux sont les réponses à *beaucoup de formats*.
+
+| Patron | À quoi il sert |
+|---|---|
+| [Envelope Wrapper](EnvelopeWrapper-fr.md) | Des données applicatives mises dans ce que l'infrastructure exige, de sorte qu'un système qui ne connaît rien aux en-têtes puisse prendre part. |
+| [Content Enricher](ContentEnricher-fr.md) | Ce que l'émetteur n'a pas pu fournir, cherché auprès d'une source externe et ajouté. |
+| [Content Filter](ContentFilter-fr.md) | Ce dont le receveur n'a pas l'usage, retiré — et l'imbrication aplatie au passage. |
+| [Claim Check](ClaimCheck-fr.md) | Le volume stocké une fois et une clé laissée à sa place, de sorte que les étapes intermédiaires ne portent qu'une référence. |
+| [Normalizer](Normalizer-fr.md) | Un routeur et un traducteur par format, de sorte que de nombreux formats équivalents arrivent comme un seul. |
+| [Canonical Data Model](CanonicalDataModel-fr.md) | Un format n'appartenant à personne, de sorte qu'ajouter une application coûte une traduction plutôt qu'une par correspondant. |
 
 ## Les points de terminaison
 
 Pas encore écrits. Messaging Gateway, Messaging Mapper, Transactional Client, Polling Consumer,
 Event-Driven Consumer, Competing Consumers, Message Dispatcher, Selective Consumer, Durable Subscriber,
 Idempotent Receiver, Service Activator — onze, qui spécialisent
-[Message Endpoint](MessageEndpoint-fr.md).
+[Message Endpoint](MessageEndpoint-fr.md). Tous sont catalogués et annotés ; seules leurs pages de guide
+manquent. En attendant qu'elles existent, les
+[entrées d'index](../../../generated/catalog-index.md#enterprise-integration-patterns) et les exemples
+sous
+[`DesignPatternCatalog.Usage/EnterpriseIntegration`](../../../../DesignPatternCatalog.Usage/EnterpriseIntegration)
+sont ce qu'il y a.
 
 ## L'exploitation
 

@@ -4,7 +4,7 @@
 
 *Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions* — Gregor
 Hohpe and Bobby Woolf, Addison-Wesley, 2003. Sixty-five patterns catalogued, and it is the largest
-catalogue here; **forty of them are written up so far**, and the three chapters still missing are named
+catalogue here; **forty-six of them are written up so far**, and the two chapters still missing are named
 below with what stands in for them until they exist.
 
 This guide is not the catalogue index. The
@@ -105,20 +105,30 @@ composites built from the others; the last three are what happens when a route b
 
 ## Message Transformation
 
-Not written yet. Envelope Wrapper, Content Enricher, Content Filter, Claim Check, Normalizer, Canonical
-Data Model — six, specialising [Message Translator](MessageTranslator-en.md) as the twelve above specialise
-the router. All are catalogued and annotated; only their guide pages are missing. Until they exist, the
-[index entries](../../../generated/catalog-index.md#enterprise-integration-patterns) and the samples
-under
-[`DesignPatternCatalog.Usage/EnterpriseIntegration`](../../../../DesignPatternCatalog.Usage/EnterpriseIntegration)
-are what there is.
+What [Message Translator](MessageTranslator-en.md) becomes when the change is more than a format. Two are
+opposites — one adds what the sender lacked, one removes what the receiver does not want. Two change a
+message's size in opposite directions. Two are the answers to *many formats*.
+
+| Pattern | What it is for |
+|---|---|
+| [Envelope Wrapper](EnvelopeWrapper-en.md) | Application data put inside what the infrastructure requires, so that a system that knows nothing of headers can take part. |
+| [Content Enricher](ContentEnricher-en.md) | What the sender could not supply, fetched from an external source and added. |
+| [Content Filter](ContentFilter-en.md) | What the receiver has no use for, removed — and the nesting flattened while doing it. |
+| [Claim Check](ClaimCheck-en.md) | The bulk stored once and a key left in its place, so that the steps in between carry a reference. |
+| [Normalizer](Normalizer-en.md) | A router and a translator per format, so that many equivalent formats arrive as one. |
+| [Canonical Data Model](CanonicalDataModel-en.md) | A format belonging to nobody, so that adding an application costs one translation rather than one per correspondent. |
 
 ## Messaging Endpoints
 
 Not written yet. Messaging Gateway, Messaging Mapper, Transactional Client, Polling Consumer,
 Event-Driven Consumer, Competing Consumers, Message Dispatcher, Selective Consumer, Durable Subscriber,
 Idempotent Receiver, Service Activator — eleven, specialising
-[Message Endpoint](MessageEndpoint-en.md).
+[Message Endpoint](MessageEndpoint-en.md). All are catalogued and annotated; only their guide pages are
+missing. Until they exist, the
+[index entries](../../../generated/catalog-index.md#enterprise-integration-patterns) and the samples
+under
+[`DesignPatternCatalog.Usage/EnterpriseIntegration`](../../../../DesignPatternCatalog.Usage/EnterpriseIntegration)
+are what there is.
 
 ## System Management
 
