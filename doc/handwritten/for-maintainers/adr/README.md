@@ -173,4 +173,4 @@ Related ADRs, sources, catalog entries, code.
 | [ADR-0038](0038-name-the-packages-after-the-catalogue-rather-than-the-vendor.md) | Name the packages after the catalogue rather than after the vendor | Accepted |
 | [ADR-0039](0039-name-the-attribute-base-after-what-it-marks.md) | Name the attribute base after what it marks | Accepted |
 | [ADR-0040](0040-write-the-pattern-guide-by-hand-in-both-languages.md) | Write the pattern guide by hand, in both languages | Accepted |
-| [ADR-0041](0041-hold-a-pattern-named-in-an-authors-later-reference-edition.md) | Hold a pattern named in an author's later reference edition | Proposed |
+| [ADR-0041](0041-hold-a-pattern-named-in-an-authors-later-reference-edition.md) | Hold a pattern named in an author's later reference edition | Accepted |

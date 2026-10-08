@@ -2,8 +2,9 @@
 
 🌍 🇬🇧 [English](0041-hold-a-pattern-named-in-an-authors-later-reference-edition.md) · 🇫🇷 Français (ce fichier)
 
-**Statut :** Proposé
+**Statut :** Accepté
 **Proposé :** 2026-08-12
+**Accepté :** 2026-10-08
 **Décideurs :** Reefact
 
 ## Contexte
