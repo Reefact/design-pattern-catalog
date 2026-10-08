@@ -140,6 +140,6 @@ so a collaborator asks a value object to do something rather than to give up its
 *Advanced Value Objects in .NET*, Reefact, 6 October 2026, `reefact.net` — the section on collaboration between
 value objects. The page reports the article's position, which is the maintainer's own.
 
-* [Index entry](../../../generated/catalog-index.md#restrictedto-reefact)
+* [Index entry](../../../generated/catalog-index.md#collaborationmethod-reefact)
 * [Generated attribute](../../../../DesignPatternCatalog.Reefact/CollaborationMethod.cs)
 * [Example](../../../../DesignPatternCatalog.Usage/Reefact/CollaborationMethodUsage.cs)

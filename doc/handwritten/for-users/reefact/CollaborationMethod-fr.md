@@ -142,6 +142,6 @@ céder ses valeurs.
 *Value Objects avancés en .NET*, Reefact, 6 octobre 2026, `reefact.net` — la section sur la collaboration entre
 value objects. La page rapporte la position de l'article, qui est celle du mainteneur.
 
-* [Entrée de l'index](../../../generated/catalog-index.md#restrictedto-reefact)
+* [Entrée de l'index](../../../generated/catalog-index.md#collaborationmethod-reefact)
 * [Attribut généré](../../../../DesignPatternCatalog.Reefact/CollaborationMethod.cs)
 * [Exemple](../../../../DesignPatternCatalog.Usage/Reefact/CollaborationMethodUsage.cs)
