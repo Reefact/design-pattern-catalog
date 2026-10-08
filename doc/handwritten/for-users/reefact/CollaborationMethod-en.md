@@ -1,10 +1,10 @@
-# Restricted To
+# Collaboration Method
 
-🌍 🇬🇧 English (this file) · 🇫🇷 [Français](RestrictedTo-fr.md)
+🌍 🇬🇧 English (this file) · 🇫🇷 [Français](CollaborationMethod-fr.md)
 
 ## Intent
 
-Restricted To opens a member that would otherwise be hidden to one named collaborator, so the exception to
+Collaboration Method opens a member that would otherwise be hidden to one named collaborator, so the exception to
 encapsulation is declared at the place it is made.
 
 ## Problem
@@ -58,7 +58,7 @@ classDiagram
 
 | Role | Annotation | Applies to | What it carries |
 |---|---|---|---|
-| RestrictedTo | `[RestrictedTo]` | method, property, constructor | A member reachable by one named collaborator and by no other caller. |
+| CollaborationMethod | `[CollaborationMethod]` | method, property, constructor | A member reachable by one named collaborator and by no other caller. |
 
 One role, with one optional link: `Collaborator`, a `Type`. It is the first link of the catalogue that names a
 type which is not a role of the pattern
@@ -66,19 +66,24 @@ type which is not a role of the pattern
 repeatable. The article observes that **many declarations on one method suggest a missing abstraction** the
 collaborators share.
 
+Only the restricted member is annotated. The method that calls it — `Fare.Apply` here — is an ordinary method
+that asked for nothing: it becomes a collaborator in effect by using the member, and on its own it is nothing
+special, so marking it would put a claim on code that never made one. The collaborator is named once, on the
+side that opens the door.
+
 The article's own attribute is generic, `[ValueObjectCollaboration<T>]`; this one carries the type as a
 property, as every link in the catalogue does.
 
 ## The example
 
-From [`RestrictedToUsage.cs`](../../../../DesignPatternCatalog.Usage/Reefact/RestrictedToUsage.cs).
+From [`CollaborationMethodUsage.cs`](../../../../DesignPatternCatalog.Usage/Reefact/CollaborationMethodUsage.cs).
 
 ```csharp
 [ValueObject]
 public sealed class ConcessionRate {
 
     // Exact on purpose: rounding is the fare's decision.
-    [RestrictedTo(Collaborator = typeof(Fare))]
+    [CollaborationMethod(Collaborator = typeof(Fare))]
     internal decimal ApplyTo(decimal amount) => amount * (1 - _percent / 100m);
 
 }
@@ -100,13 +105,13 @@ returns an amount that has not been rounded; the fare applies its rounding polic
 
 The article's guidance is about value objects that must work together without exposing what they need:
 *expose what consumers need to know, encapsulate what they need to do*, and prefer a behaviour such as
-`fare.Apply(rate)` to computing from exposed fields. Restricted To is for the case where one value object
+`fare.Apply(rate)` to computing from exposed fields. Collaboration Method is for the case where one value object
 needs another to do part of that work and no consumer should.
 
 ## When not to use it
 
 The article gives no criteria for leaving it out, and this page does not invent them. It does give a
-signal: a method with several `RestrictedTo` declarations is probably missing an abstraction, and the
+signal: a method with several `CollaborationMethod` declarations is probably missing an abstraction, and the
 collaborators should be looked at before another declaration is added.
 
 ## Advantages
@@ -120,7 +125,7 @@ The article gives no list of advantages. The reasons it gives:
 ## Drawbacks
 
 * Without an architecture rule that reads the attribute, it is documentation.
-* The link is optional by design: `[RestrictedTo]` with no collaborator compiles, and says only that
+* The link is optional by design: `[CollaborationMethod]` with no collaborator compiles, and says only that
   something is restricted.
 * The mechanism leans on assembly boundaries. In a single assembly, `internal` hides nothing from the rest of
   it.
@@ -136,5 +141,5 @@ so a collaborator asks a value object to do something rather than to give up its
 value objects. The page reports the article's position, which is the maintainer's own.
 
 * [Index entry](../../../generated/catalog-index.md#restrictedto-reefact)
-* [Generated attribute](../../../../DesignPatternCatalog.Reefact/RestrictedTo.cs)
-* [Example](../../../../DesignPatternCatalog.Usage/Reefact/RestrictedToUsage.cs)
+* [Generated attribute](../../../../DesignPatternCatalog.Reefact/CollaborationMethod.cs)
+* [Example](../../../../DesignPatternCatalog.Usage/Reefact/CollaborationMethodUsage.cs)

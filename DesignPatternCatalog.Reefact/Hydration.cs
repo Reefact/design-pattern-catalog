@@ -32,14 +32,14 @@ namespace DesignPatternCatalog.Reefact {
         ///     external format.
         /// </summary>
         [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor, AllowMultiple = false, Inherited = false)]
-        public sealed class RehydrateAttribute : Role { }
+        public sealed class RehydrationMethodAttribute : Role { }
 
         /// <summary>
         ///     Produces the underlying values of a value object: a boundary with the outer layers, not an API for
         ///     collaborators.
         /// </summary>
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        public sealed class DehydrateAttribute : Role { }
+        public sealed class DehydrationMethodAttribute : Role { }
 
         /// <summary>
         ///     Carries the several underlying values of one value object across the boundary, holding plain values and

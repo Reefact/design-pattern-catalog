@@ -10,7 +10,7 @@
   "inherited": false,
   "roles": [
     {
-      "name": "Rehydrate",
+      "name": "RehydrationMethod",
       "targets": [
         "Method",
         "Constructor"
@@ -20,7 +20,7 @@
       "links": []
     },
     {
-      "name": "Dehydrate",
+      "name": "DehydrationMethod",
       "targets": [
         "Method"
       ],

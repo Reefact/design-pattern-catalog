@@ -5,7 +5,7 @@ using DesignPatternCatalog.Reefact;
 
 #endregion
 
-namespace DesignPatternCatalog.Usage.Reefact.RestrictedToSample {
+namespace DesignPatternCatalog.Usage.Reefact.CollaborationMethodSample {
 
     // Public transport: a fare is what a passenger pays, a concession rate is the share the operator waives
     // for a category of passenger — pensioners, students, children.
@@ -18,7 +18,7 @@ namespace DesignPatternCatalog.Usage.Reefact.RestrictedToSample {
     // That makes ApplyTo a method with exactly one legitimate caller. Making it public would let any use
     // case in the application layer take a percentage off a bare decimal and round it as it saw fit —
     // which is how a pensioner's fare comes to be one cent different on the receipt and in the ledger.
-    // Making it internal keeps the application layer out, and RESTRICTED TO says who is let in, so a
+    // Making it internal keeps the application layer out, and COLLABORATION METHOD says who is let in, so a
     // second caller shows up in a review rather than in a reconciliation.
     //
     // The attribute is repeatable, and a member that needs two of them is worth looking at: it usually means
@@ -38,7 +38,7 @@ namespace DesignPatternCatalog.Usage.Reefact.RestrictedToSample {
         public static ConcessionRate FromPercent(decimal percent) => new(percent);
 
         // Exact on purpose: rounding is the fare's decision.
-        [RestrictedTo(Collaborator = typeof(Fare))]
+        [CollaborationMethod(Collaborator = typeof(Fare))]
         internal decimal ApplyTo(decimal amount) => amount * (1 - _percent / 100m);
 
     }

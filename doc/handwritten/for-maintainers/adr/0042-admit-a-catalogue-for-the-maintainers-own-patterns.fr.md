@@ -126,7 +126,7 @@ l'unité qui reste utile à mesure qu'elle grandit.
 
 ## Actions de suivi
 
-* Rédiger le guide des patterns `Hydration` et `RestrictedTo`, dans les deux langues.
+* Rédiger le guide des patterns `Hydration` et `CollaborationMethod`, dans les deux langues.
 * Décider, le jour où un texte d'un autre auteur est proposé, si le catalogue reste celui du mainteneur.
 
 ## Références
@@ -136,5 +136,5 @@ l'unité qui reste utile à mesure qu'elle grandit.
   [ADR-0028](0028-hold-a-pattern-in-every-catalogue-whose-work-presents-it.fr.md),
   [ADR-0035](0035-index-the-pattern-language-and-require-a-write-up.fr.md),
   [ADR-0038](0038-name-the-packages-after-the-catalogue-rather-than-the-vendor.fr.md)
-* [ADR-0043](0043-let-a-role-link-to-a-type-that-is-not-a-role.fr.md) — le lien dont `RestrictedTo` a besoin
+* [ADR-0043](0043-let-a-role-link-to-a-type-that-is-not-a-role.fr.md) — le lien dont `CollaborationMethod` a besoin
 * Reefact, *Value Objects avancés en .NET*, 2026 — `reefact.net`

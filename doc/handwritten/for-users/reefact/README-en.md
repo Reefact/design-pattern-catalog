@@ -23,7 +23,7 @@ to reach for it, when not to, and what it costs. They are written by hand
 | Pattern | What it is for |
 |---|---|
 | [Hydration](Hydration-en.md) | The one way in and the one way out of a value object: rebuilding it from plain values and reducing it back to them. |
-| [Restricted To](RestrictedTo-en.md) | A member opened to one named collaborator and to no other caller. |
+| [Collaboration Method](CollaborationMethod-en.md) | A member opened to one named collaborator and to no other caller. |
 
 ## What these pages do not do
 

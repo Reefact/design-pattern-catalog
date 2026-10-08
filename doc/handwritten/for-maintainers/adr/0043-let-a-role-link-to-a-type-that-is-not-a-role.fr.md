@@ -14,14 +14,14 @@ connaissent pas d'autre sorte : le nom d'un lien doit être celui d'un rôle fr�
 documentée comme pointant vers l'attribut de ce rôle, et un test vérifie que chaque propriété de lien de
 chaque attribut livré nomme un frère.
 
-`RestrictedTo`, deuxième pattern du catalogue `Reefact`
+`CollaborationMethod`, deuxième pattern du catalogue `Reefact`
 ([ADR-0042](0042-admit-a-catalogue-for-the-maintainers-own-patterns.fr.md)), marque un membre qu'un seul
 collaborateur nommé peut appeler, et personne d'autre. Tout son contenu est un type — le collaborateur —
 et ce type n'est pas un participant du pattern : c'est la classe que l'auteur a choisie, annotée de rien.
 Le pattern n'a qu'un rôle, donc aucun frère vers qui pointer, et un second rôle ne serait pas honnête,
 puisque personne n'annoterait le collaborateur avec.
 
-Aucune autre entrée parmi les 345 n'en a besoin. Jusqu'à `RestrictedTo`, la seule sorte de lien du format
+Aucune autre entrée parmi les 345 n'en a besoin. Jusqu'à `CollaborationMethod`, la seule sorte de lien du format
 suffisait.
 
 ## Décision
@@ -39,7 +39,7 @@ l'ADR-0008 a refusé pour les liens entre participants.
 
 La capacité est utilisée dès son arrivée : l'objection de
 l'[ADR-0031](0031-carry-no-generator-machinery-for-an-unused-capability.fr.md) à de la machinerie qu'aucune
-entrée n'exerce ne s'applique donc pas. `RestrictedTo` est l'entrée qui l'exerce.
+entrée n'exerce ne s'applique donc pas. `CollaborationMethod` est l'entrée qui l'exerce.
 
 Les liens sont déclarés dans le catalogue et non déduits, pour la raison qui fait du catalogue une donnée
 ([ADR-0002](0002-keep-the-pattern-catalog-as-data-and-generate-the-attributes.fr.md)) : une propriété qui
@@ -54,15 +54,15 @@ toute entrée qui en a ; celle-ci en ajoute une seconde sorte à côté.
 
 ### Un second rôle pour figurer le collaborateur
 
-Envisagé parce qu'il ne demande rien de nouveau : un rôle `Collaborator`, et `RestrictedTo` lié à lui.
+Envisagé parce qu'il ne demande rien de nouveau : un rôle `Collaborator`, et `CollaborationMethod` lié à lui.
 
 Rejeté parce que personne n'annoterait avec. Ce serait un rôle qui n'existe que pour donner un nom à un
-lien, il transformerait un attribut plat en attribut imbriqué (`[RestrictedTo.RestrictedTo]`), et le
+lien, il transformerait un attribut plat en attribut imbriqué (`[CollaborationMethod.CollaborationMethod]`), et le
 catalogue prétendrait à un participant que le code ne déclare jamais.
 
 ### Un argument positionnel du constructeur
 
-`[RestrictedTo(typeof(Price))]`. Envisagé parce que c'est la forme la plus courte.
+`[CollaborationMethod(typeof(Price))]`. Envisagé parce que c'est la forme la plus courte.
 
 Rejeté parce que tout lien du catalogue est une propriété nommée et optionnelle, et que le lecteur d'un
 attribut doit retrouver la même forme dans le suivant. Un argument positionnel est aussi obligatoire, ce
@@ -86,7 +86,7 @@ vérifie pas.
 
 ### Risques
 
-* Un lien est optionnel : `[RestrictedTo]` sans collaborateur compile et dit seulement que quelque chose est
+* Un lien est optionnel : `[CollaborationMethod]` sans collaborateur compile et dit seulement que quelque chose est
   restreint. C'est à une règle d'architecture d'exiger le collaborateur ; l'attribut ne le fait pas.
 * Ceci est jugé comme un complément de l'ADR-0008 et non comme son remplacement. Un mainteneur qui y lit
   le second cas doit le dire, et le record serait réémis en conséquence.
