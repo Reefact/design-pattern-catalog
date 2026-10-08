@@ -1,6 +1,7 @@
 #region Usings declarations
 
 using System.Reflection;
+using System.Text.Json;
 
 using DesignPatternCatalog.Usage;
 
@@ -55,6 +56,19 @@ namespace DesignPatternCatalog.Tests {
             }
 
             return data;
+        }
+
+        private static HashSet<string> ExternalLinksOf(Type role) {
+            string path = Path.Combine(Repository.Root, "catalog", PatternInfo.CatalogOf(role), PatternInfo.PatternNameOf(role) + ".json");
+            string name = role.Name[..^"Attribute".Length];
+
+            using JsonDocument entry = JsonDocument.Parse(File.ReadAllText(path));
+            JsonElement declared = entry.RootElement.GetProperty("roles").EnumerateArray()
+                                        .Single(candidate => candidate.GetProperty("name").GetString() == name);
+
+            return declared.TryGetProperty("externalLinks", out JsonElement links)
+                ? links.EnumerateArray().Select(link => link.GetProperty("name").GetString()!).ToHashSet()
+                : new HashSet<string>();
         }
 
         #endregion
@@ -116,11 +130,18 @@ namespace DesignPatternCatalog.Tests {
 
         [Theory]
         [MemberData(nameof(EveryRole))]
-        public void A_link_is_a_type_naming_a_role_of_the_same_pattern(Type role) {
+        public void A_link_is_a_type_naming_a_role_of_the_same_pattern_or_declared_as_external(Type role) {
             // ADR-0008: a link binds participants of one occurrence, and it is a Type precisely so that it cannot
-            // point at something that does not exist. Nothing checks that it points WITHIN the pattern.
+            // point at something that does not exist. Nothing checks that it points WITHIN the pattern — except
+            // here. ADR-0043 adds the one exception: a link to a type that is no role, which the catalog must
+            // declare as an external link, so that a property cannot appear in a generated attribute without the
+            // data having said it should.
+            HashSet<string> external = ExternalLinksOf(role);
+
             foreach (PropertyInfo link in role.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)) {
                 Assert.Equal(typeof(Type), link.PropertyType);
+
+                if (external.Contains(link.Name)) { continue; }
 
                 Type? container = role.DeclaringType;
                 Assert.NotNull(container);

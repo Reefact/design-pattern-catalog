@@ -32,6 +32,7 @@ CATALOG_LABEL = {
     "MicroservicesPatterns": "Microservices Patterns",
     "Posa2": "Pattern-Oriented Software Architecture, Volume 2",
     "DependencyInjection": "Dependency Injection Principles, Practices, and Patterns",
+    "Reefact": "Reefact",
     "Idioms": "no catalog of its own",
 }
 
@@ -133,20 +134,37 @@ def role_class(pattern, role, indent):
     out = [doc(role["summary"], indent)]
     out.append(f"{pad}[AttributeUsage({targets(role['targets'])}, "
                f"AllowMultiple = {allow_multiple}, Inherited = {inherited})]")
-    if not role["links"]:
+    if not role["links"] and not role.get("externalLinks"):
         out.append(f"{pad}public {role['_modifier']}class {role['name']}Attribute : Role {{ }}")
         return "\n".join(out)
 
     out.append(f"{pad}public {role['_modifier']}class {role['name']}Attribute : Role {{")
+    out += link_properties(role, indent + 4)
+    out.append("")
+    out.append(f"{pad}}}")
+    return "\n".join(out)
+
+
+def link_properties(role, indent):
+    """The optional typed properties a role carries: links to its siblings, then links to any other type.
+
+    A link to a sibling names a role of the same pattern and is documented as such (ADR-0008). An external link
+    names a type that is no role of the pattern — the one thing the hierarchy cannot say — and carries its own
+    sentence, since there is no sibling attribute for the reader to follow.
+    """
+    pad = " " * indent
+    out = []
     for link in role["links"]:
         out.append("")
         out.append(doc(f'The <see cref="{link}Attribute" /> this role is bound to. Optional: it is only needed '
                        f"when the type hierarchy alone does not tell which occurrence of the pattern is meant.",
-                       indent + 4))
-        out.append(f"{pad}    public Type? {link} {{ get; init; }}")
-    out.append("")
-    out.append(f"{pad}}}")
-    return "\n".join(out)
+                       indent))
+        out.append(f"{pad}public Type? {link} {{ get; init; }}")
+    for link in role.get("externalLinks", []):
+        out.append("")
+        out.append(doc(link["summary"], indent))
+        out.append(f"{pad}public Type? {link['name']} {{ get; init; }}")
+    return out
 
 
 def flat_attribute(pattern):
@@ -166,7 +184,13 @@ def flat_attribute(pattern):
     role = pattern["roles"][0]
     out.append(f"    [AttributeUsage({targets(role['targets'])}, "
                f"AllowMultiple = {'true' if role['repeatable'] else 'false'}, Inherited = {inherited})]")
-    out.append(f"    public {pattern['_modifier']}class {name}Attribute : {base_of(pattern)} {{ }}")
+    if role.get("externalLinks"):
+        out.append(f"    public {pattern['_modifier']}class {name}Attribute : {base_of(pattern)} {{")
+        out += link_properties(role, 8)
+        out.append("")
+        out.append("    }")
+    else:
+        out.append(f"    public {pattern['_modifier']}class {name}Attribute : {base_of(pattern)} {{ }}")
     out.append("")
     out.append("}")
     return "\n".join(out) + "\n"
@@ -263,7 +287,8 @@ def index_entry(pattern):
     for role in pattern["roles"]:
         targets_read = ", ".join(target.lower() for target in role["targets"])
         repeatable = "yes" if role["repeatable"] else "no"
-        links = ", ".join(f"`{link}`" for link in role["links"]) or "—"
+        links = ", ".join([f"`{link}`" for link in role["links"]]
+                          + [f"`{link['name']}` (any type)" for link in role.get("externalLinks", [])]) or "—"
         out.append(f"| {role['name']} | `{annotation_of(pattern, role)}` | {targets_read} | {repeatable} | {links} |")
 
     for role in pattern["roles"]:

@@ -1,0 +1,42 @@
+{
+  "catalog": "Reefact",
+  "name": "Hydration",
+  "summary": "The boundary at which a value object is rebuilt from, and reduced to, its underlying values: rehydration enforces the invariants and knows no external format, dehydration yields plain values and is called only by other dehydration.",
+  "reference": {
+    "author": "Reefact",
+    "work": "Advanced Value Objects in .NET",
+    "year": 2026
+  },
+  "inherited": false,
+  "roles": [
+    {
+      "name": "Rehydrate",
+      "targets": [
+        "Method",
+        "Constructor"
+      ],
+      "repeatable": false,
+      "summary": "Builds a value object from its underlying values, enforcing its invariants and knowing nothing of any external format.",
+      "links": []
+    },
+    {
+      "name": "Dehydrate",
+      "targets": [
+        "Method"
+      ],
+      "repeatable": false,
+      "summary": "Produces the underlying values of a value object: a boundary with the outer layers, not an API for collaborators.",
+      "links": []
+    },
+    {
+      "name": "DehydratedObject",
+      "targets": [
+        "Class",
+        "Struct"
+      ],
+      "repeatable": false,
+      "summary": "Carries the several underlying values of one value object across the boundary, holding plain values and never a value object.",
+      "links": []
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "catalog": "Reefact",
+  "name": "RestrictedTo",
+  "summary": "Opens an otherwise hidden member to one named collaborator, so that the exception to encapsulation is declared where it is made and can be verified by an architecture rule.",
+  "reference": {
+    "author": "Reefact",
+    "work": "Advanced Value Objects in .NET",
+    "year": 2026
+  },
+  "inherited": false,
+  "roles": [
+    {
+      "name": "RestrictedTo",
+      "targets": [
+        "Method",
+        "Property",
+        "Constructor"
+      ],
+      "repeatable": true,
+      "summary": "A member reachable by one named collaborator and by no other caller.",
+      "links": [],
+      "externalLinks": [
+        {
+          "name": "Collaborator",
+          "summary": "The one type allowed to call this member. Stating it is the point of the annotation; left out, the annotation says only that the member is restricted."
+        }
+      ]
+    }
+  ]
+}
