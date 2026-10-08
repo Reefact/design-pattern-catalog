@@ -23,7 +23,7 @@ Elles sont écrites à la main
 | Pattern | À quoi il sert |
 |---|---|
 | [Hydration](Hydration-fr.md) | L'unique entrée et l'unique sortie d'un value object : le reconstruire à partir de valeurs simples et le réduire à nouveau à elles. |
-| [Restricted To](RestrictedTo-fr.md) | Un membre ouvert à un seul collaborateur nommé et à aucun autre appelant. |
+| [Collaboration Method](CollaborationMethod-fr.md) | Un membre ouvert à un seul collaborateur nommé et à aucun autre appelant. |
 
 ## Ce que ces pages ne font pas
 

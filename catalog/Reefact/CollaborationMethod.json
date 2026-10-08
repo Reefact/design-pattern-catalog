@@ -1,6 +1,6 @@
 {
   "catalog": "Reefact",
-  "name": "RestrictedTo",
+  "name": "CollaborationMethod",
   "summary": "Opens an otherwise hidden member to one named collaborator, so that the exception to encapsulation is declared where it is made and can be verified by an architecture rule.",
   "reference": {
     "author": "Reefact",
@@ -10,7 +10,7 @@
   "inherited": false,
   "roles": [
     {
-      "name": "RestrictedTo",
+      "name": "CollaborationMethod",
       "targets": [
         "Method",
         "Property",

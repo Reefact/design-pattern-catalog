@@ -41,14 +41,14 @@ namespace DesignPatternCatalog.Usage.Reefact.HydrationSample {
 
         // Named values are not a closed set of strings: what comes back from storage must be the same unit
         // as the static member, not merely a unit that prints the same.
-        [Hydration.Rehydrate]
+        [Hydration.RehydrationMethod]
         public static DoseUnit Rehydrate(string code) {
             DoseUnit? unit = Array.Find(Known, known => known._code == code);
 
             return unit ?? throw new ArgumentException($"'{code}' is not a unit a dose can be counted in.", nameof(code));
         }
 
-        [Hydration.Dehydrate]
+        [Hydration.DehydrationMethod]
         public string ToCode() => _code;
 
         public bool Equals(DoseUnit? other) => other is not null && other._code == _code;
@@ -72,11 +72,11 @@ namespace DesignPatternCatalog.Usage.Reefact.HydrationSample {
 
         public static Dose Of(decimal amount, DoseUnit unit) => new(amount, unit);
 
-        [Hydration.Rehydrate]
+        [Hydration.RehydrationMethod]
         public static Dose Rehydrate(DehydratedDose dehydrated) =>
             new(dehydrated.Amount, DoseUnit.Rehydrate(dehydrated.UnitCode));
 
-        [Hydration.Dehydrate]
+        [Hydration.DehydrationMethod]
         public DehydratedDose Dehydrate() => new(_amount, _unit.ToCode());
 
         public bool Equals(Dose? other) => other is not null && other._amount == _amount && other._unit.Equals(_unit);

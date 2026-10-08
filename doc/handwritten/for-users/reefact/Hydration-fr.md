@@ -71,8 +71,8 @@ déplacer la frontière d'un cran vers l'intérieur.
 
 | Rôle | Annotation | S'applique à | Ce qu'il porte |
 |---|---|---|---|
-| Rehydrate | `[Hydration.Rehydrate]` | méthode, constructeur | Construit un value object à partir de ses valeurs sous-jacentes et applique ses invariants. |
-| Dehydrate | `[Hydration.Dehydrate]` | méthode | Produit les valeurs sous-jacentes d'un value object. |
+| RehydrationMethod | `[Hydration.RehydrationMethod]` | méthode, constructeur | Construit un value object à partir de ses valeurs sous-jacentes et applique ses invariants. |
+| DehydrationMethod | `[Hydration.DehydrationMethod]` | méthode | Produit les valeurs sous-jacentes d'un value object. |
 | DehydratedObject | `[Hydration.DehydratedObject]` | classe, struct | Transporte plusieurs valeurs d'un value object à travers la frontière. |
 
 Les rôles ne sont pas liés entre eux : l'objet déshydraté qu'un value object produit se lit dans le type de
@@ -86,10 +86,10 @@ Extrait de [`HydrationUsage.cs`](../../../../DesignPatternCatalog.Usage/Reefact/
 [ValueObject]
 public sealed class DoseUnit {
 
-    [Hydration.Rehydrate]
+    [Hydration.RehydrationMethod]
     public static DoseUnit Rehydrate(string code) { /* l'unité connue portant ce code, ou une erreur */ }
 
-    [Hydration.Dehydrate]
+    [Hydration.DehydrationMethod]
     public string ToCode() => _code;
 
 }
@@ -97,11 +97,11 @@ public sealed class DoseUnit {
 [ValueObject]
 public sealed class Dose {
 
-    [Hydration.Rehydrate]
+    [Hydration.RehydrationMethod]
     public static Dose Rehydrate(DehydratedDose dehydrated) =>
         new(dehydrated.Amount, DoseUnit.Rehydrate(dehydrated.UnitCode));
 
-    [Hydration.Dehydrate]
+    [Hydration.DehydrationMethod]
     public DehydratedDose Dehydrate() => new(_amount, _unit.ToCode());
 
 }
@@ -164,7 +164,7 @@ L'article ne donne pas de liste d'avantages. Voici les raisons qu'il donne pour 
 
 ## Relations avec d'autres patterns
 
-**`RestrictedTo`**, sur la page suivante, est son voisin dans l'article : la collaboration entre value objects
+**`CollaborationMethod`**, sur la page suivante, est son voisin dans l'article : la collaboration entre value objects
 ouvre une méthode à un collaborateur nommé, alors que la déshydratation n'est volontairement pas une API de
 collaboration.
 

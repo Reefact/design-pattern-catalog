@@ -123,7 +123,7 @@ is the unit that stays useful as it grows.
 
 ## Follow-up Actions
 
-* Write the pattern guide for `Hydration` and `RestrictedTo`, in both languages.
+* Write the pattern guide for `Hydration` and `CollaborationMethod`, in both languages.
 * Decide, when a second author's text is proposed, whether the catalogue stays the maintainer's own.
 
 ## References
@@ -133,5 +133,5 @@ is the unit that stays useful as it grows.
   [ADR-0028](0028-hold-a-pattern-in-every-catalogue-whose-work-presents-it.md),
   [ADR-0035](0035-index-the-pattern-language-and-require-a-write-up.md),
   [ADR-0038](0038-name-the-packages-after-the-catalogue-rather-than-the-vendor.md)
-* [ADR-0043](0043-let-a-role-link-to-a-type-that-is-not-a-role.md) — the link `RestrictedTo` needs
+* [ADR-0043](0043-let-a-role-link-to-a-type-that-is-not-a-role.md) — the link `CollaborationMethod` needs
 * Reefact, *Advanced Value Objects in .NET*, 2026 — `reefact.net`

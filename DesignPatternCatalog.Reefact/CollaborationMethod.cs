@@ -7,8 +7,8 @@ using System;
 namespace DesignPatternCatalog.Reefact {
 
     /// <summary>
-    ///     RestrictedTo (Reefact) — Opens an otherwise hidden member to one named collaborator, so that the exception
-    ///     to encapsulation is declared where it is made and can be verified by an architecture rule.
+    ///     CollaborationMethod (Reefact) — Opens an otherwise hidden member to one named collaborator, so that the
+    ///     exception to encapsulation is declared where it is made and can be verified by an architecture rule.
     /// </summary>
     /// <remarks>
     ///     <para>
@@ -19,7 +19,7 @@ namespace DesignPatternCatalog.Reefact {
     ///     </para>
     /// </remarks>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Constructor, AllowMultiple = true, Inherited = false)]
-    public sealed class RestrictedToAttribute : DesignPatternAttribute {
+    public sealed class CollaborationMethodAttribute : DesignPatternAttribute {
 
         /// <summary>
         ///     The one type allowed to call this member. Stating it is the point of the annotation; left out, the

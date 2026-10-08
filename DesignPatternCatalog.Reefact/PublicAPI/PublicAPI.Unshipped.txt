@@ -1,14 +1,14 @@
 #nullable enable
+DesignPatternCatalog.Reefact.CollaborationMethodAttribute
+DesignPatternCatalog.Reefact.CollaborationMethodAttribute.CollaborationMethodAttribute() -> void
+DesignPatternCatalog.Reefact.CollaborationMethodAttribute.Collaborator.get -> System.Type?
+DesignPatternCatalog.Reefact.CollaborationMethodAttribute.Collaborator.init -> void
 DesignPatternCatalog.Reefact.Hydration
-DesignPatternCatalog.Reefact.Hydration.DehydrateAttribute
-DesignPatternCatalog.Reefact.Hydration.DehydrateAttribute.DehydrateAttribute() -> void
 DesignPatternCatalog.Reefact.Hydration.DehydratedObjectAttribute
 DesignPatternCatalog.Reefact.Hydration.DehydratedObjectAttribute.DehydratedObjectAttribute() -> void
-DesignPatternCatalog.Reefact.Hydration.RehydrateAttribute
-DesignPatternCatalog.Reefact.Hydration.RehydrateAttribute.RehydrateAttribute() -> void
+DesignPatternCatalog.Reefact.Hydration.DehydrationMethodAttribute
+DesignPatternCatalog.Reefact.Hydration.DehydrationMethodAttribute.DehydrationMethodAttribute() -> void
+DesignPatternCatalog.Reefact.Hydration.RehydrationMethodAttribute
+DesignPatternCatalog.Reefact.Hydration.RehydrationMethodAttribute.RehydrationMethodAttribute() -> void
 DesignPatternCatalog.Reefact.Hydration.Role
 DesignPatternCatalog.Reefact.Hydration.Role.Role() -> void
-DesignPatternCatalog.Reefact.RestrictedToAttribute
-DesignPatternCatalog.Reefact.RestrictedToAttribute.Collaborator.get -> System.Type?
-DesignPatternCatalog.Reefact.RestrictedToAttribute.Collaborator.init -> void
-DesignPatternCatalog.Reefact.RestrictedToAttribute.RestrictedToAttribute() -> void

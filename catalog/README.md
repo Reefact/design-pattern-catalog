@@ -53,7 +53,7 @@ catalog written in bulk reviewable: a missing role or a bad target is a
 validation error rather than something to notice by reading.
 
 A role may also carry `externalLinks`: optional typed properties naming a type that is **not** a role of the
-pattern — `RestrictedTo`'s `Collaborator`, for one ([ADR-0043](../doc/handwritten/for-maintainers/adr/0043-let-a-role-link-to-a-type-that-is-not-a-role.md)).
+pattern — `CollaborationMethod`'s `Collaborator`, for one ([ADR-0043](../doc/handwritten/for-maintainers/adr/0043-let-a-role-link-to-a-type-that-is-not-a-role.md)).
 Use `links` for a participant of the same occurrence and `externalLinks` for anything else.
 
 Two rules the schema cannot state on its own, and which are worth checking too:

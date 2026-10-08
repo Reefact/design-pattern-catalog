@@ -55,6 +55,7 @@
 | [ClosureOfOperation](#closureofoperation-domain-driven-design) | Domain-Driven Design | 1 | — |
 | [CoarseGrainedLock](#coarsegrainedlock-patterns-of-enterprise-application-architecture) | Patterns of Enterprise Application Architecture | 1 | — |
 | [CohesiveMechanism](#cohesivemechanism-domain-driven-design) | Domain-Driven Design | 1 | — |
+| [CollaborationMethod](#collaborationmethod-reefact) | Reefact | 1 | — |
 | [Command](#command-gang-of-four) | Gang of Four | 5 | — |
 | [CommandMessage](#commandmessage-enterprise-integration-patterns) | Enterprise Integration Patterns | 1 | narrows Message |
 | [CommandSideReplica](#commandsidereplica-microservices-patterns) | Microservices Patterns | 3 | — |
@@ -255,7 +256,6 @@
 | [RequestReply](#requestreply-enterprise-integration-patterns) | Enterprise Integration Patterns | 4 | — |
 | [Resequencer](#resequencer-enterprise-integration-patterns) | Enterprise Integration Patterns | 1 | — |
 | [ResourceAllocation](#resourceallocation-analysis-patterns) | Analysis Patterns | 6 | — |
-| [RestrictedTo](#restrictedto-reefact) | Reefact | 1 | — |
 | [ReturnAddress](#returnaddress-enterprise-integration-patterns) | Enterprise Integration Patterns | 1 | — |
 | [ReversalAdjustment](#reversaladjustment-accounting-patterns) | Accounting Patterns | 4 | — |
 | [RoutingSlip](#routingslip-enterprise-integration-patterns) | Enterprise Integration Patterns | 2 | — |
@@ -5204,6 +5204,20 @@ Held by a subtype: no · [Source](../../DesignPatternCatalog.Posa2/WrapperFacade
 
 `DesignPatternCatalog.Reefact` — 2 patterns, 4 roles.
 
+### CollaborationMethod (Reefact)
+
+Opens an otherwise hidden member to one named collaborator, so that the exception to encapsulation is declared where it is made and can be verified by an architecture rule.
+
+*Reefact, Advanced Value Objects in .NET, 2026.*
+
+| Role | Annotation | Applies to | Repeatable | Links |
+|---|---|---|---|---|
+| CollaborationMethod | `[CollaborationMethod]` | method, property, constructor | yes | `Collaborator` (any type) |
+
+**CollaborationMethod** — A member reachable by one named collaborator and by no other caller.
+
+Held by a subtype: no · [Source](../../DesignPatternCatalog.Reefact/CollaborationMethod.cs) · [Sample](../../DesignPatternCatalog.Usage/Reefact/CollaborationMethodUsage.cs)
+
 ### Hydration (Reefact)
 
 The boundary at which a value object is rebuilt from, and reduced to, its underlying values: rehydration enforces the invariants and knows no external format, dehydration yields plain values and is called only by other dehydration.
@@ -5212,31 +5226,17 @@ The boundary at which a value object is rebuilt from, and reduced to, its underl
 
 | Role | Annotation | Applies to | Repeatable | Links |
 |---|---|---|---|---|
-| Rehydrate | `[Hydration.Rehydrate]` | method, constructor | no | — |
-| Dehydrate | `[Hydration.Dehydrate]` | method | no | — |
+| RehydrationMethod | `[Hydration.RehydrationMethod]` | method, constructor | no | — |
+| DehydrationMethod | `[Hydration.DehydrationMethod]` | method | no | — |
 | DehydratedObject | `[Hydration.DehydratedObject]` | class, struct | no | — |
 
-**Rehydrate** — Builds a value object from its underlying values, enforcing its invariants and knowing nothing of any external format.
+**RehydrationMethod** — Builds a value object from its underlying values, enforcing its invariants and knowing nothing of any external format.
 
-**Dehydrate** — Produces the underlying values of a value object: a boundary with the outer layers, not an API for collaborators.
+**DehydrationMethod** — Produces the underlying values of a value object: a boundary with the outer layers, not an API for collaborators.
 
 **DehydratedObject** — Carries the several underlying values of one value object across the boundary, holding plain values and never a value object.
 
 Held by a subtype: no · [Source](../../DesignPatternCatalog.Reefact/Hydration.cs) · [Sample](../../DesignPatternCatalog.Usage/Reefact/HydrationUsage.cs)
-
-### RestrictedTo (Reefact)
-
-Opens an otherwise hidden member to one named collaborator, so that the exception to encapsulation is declared where it is made and can be verified by an architecture rule.
-
-*Reefact, Advanced Value Objects in .NET, 2026.*
-
-| Role | Annotation | Applies to | Repeatable | Links |
-|---|---|---|---|---|
-| RestrictedTo | `[RestrictedTo]` | method, property, constructor | yes | `Collaborator` (any type) |
-
-**RestrictedTo** — A member reachable by one named collaborator and by no other caller.
-
-Held by a subtype: no · [Source](../../DesignPatternCatalog.Reefact/RestrictedTo.cs) · [Sample](../../DesignPatternCatalog.Usage/Reefact/RestrictedToUsage.cs)
 
 
 ## xUnit Test Patterns

@@ -69,8 +69,8 @@ boundary one step inside.
 
 | Role | Annotation | Applies to | What it carries |
 |---|---|---|---|
-| Rehydrate | `[Hydration.Rehydrate]` | method, constructor | Builds a value object from its underlying values and enforces its invariants. |
-| Dehydrate | `[Hydration.Dehydrate]` | method | Produces the underlying values of a value object. |
+| RehydrationMethod | `[Hydration.RehydrationMethod]` | method, constructor | Builds a value object from its underlying values and enforces its invariants. |
+| DehydrationMethod | `[Hydration.DehydrationMethod]` | method | Produces the underlying values of a value object. |
 | DehydratedObject | `[Hydration.DehydratedObject]` | class, struct | Carries several values of one value object across the boundary. |
 
 The roles are not linked to one another: which dehydrated object a value object produces is read from the
@@ -84,10 +84,10 @@ From [`HydrationUsage.cs`](../../../../DesignPatternCatalog.Usage/Reefact/Hydrat
 [ValueObject]
 public sealed class DoseUnit {
 
-    [Hydration.Rehydrate]
+    [Hydration.RehydrationMethod]
     public static DoseUnit Rehydrate(string code) { /* the known unit with that code, or an error */ }
 
-    [Hydration.Dehydrate]
+    [Hydration.DehydrationMethod]
     public string ToCode() => _code;
 
 }
@@ -95,11 +95,11 @@ public sealed class DoseUnit {
 [ValueObject]
 public sealed class Dose {
 
-    [Hydration.Rehydrate]
+    [Hydration.RehydrationMethod]
     public static Dose Rehydrate(DehydratedDose dehydrated) =>
         new(dehydrated.Amount, DoseUnit.Rehydrate(dehydrated.UnitCode));
 
-    [Hydration.Dehydrate]
+    [Hydration.DehydrationMethod]
     public DehydratedDose Dehydrate() => new(_amount, _unit.ToCode());
 
 }
@@ -158,7 +158,7 @@ The article gives no list of advantages. These are the reasons it gives for each
 
 ## Relations with other patterns
 
-**`RestrictedTo`**, on the next page, is its neighbour in the article: collaboration between value objects
+**`CollaborationMethod`**, on the next page, is its neighbour in the article: collaboration between value objects
 opens a method to one named collaborator, while dehydration is deliberately not a collaboration API.
 
 **`ValueObject`** in the *Domain-Driven Design* catalogue is what is being hydrated. This catalogue ships as
