@@ -189,7 +189,7 @@ assertions they carry**, never by their names.
 Almost nothing this library decides is defended by the compiler, and the
 attributes are generated from a catalog, so a reader of the output cannot tell a
 decided trait from an incidental one. The reasoning is kept in the
-[ADR base](doc/handwritten/for-maintainers/adr/) — 43 records, English
+[ADR base](doc/handwritten/for-maintainers/adr/) — 45 records, English
 canonical with a French translation alongside — and that is where to look when a
 shape seems arbitrary.
 

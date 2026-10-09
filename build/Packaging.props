@@ -19,12 +19,11 @@
          what every role means reach a consumer through this file and nowhere else. -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-    <!-- Version. A development placeholder until a release tag carries it, and ONE number for every package:
-         ADR-0027 splits the catalogues into independent packages and prescribes versioning them in lockstep
-         for the first release, because loosening later is easy and tightening later is not. Semantic
-         Versioning over TWO contracts — what a consumer compiles against and what it reads back. Policy:
-         ADR-0021; the table: CONTRIBUTING.md. -->
-    <Version>0.1.0-dev</Version>
+    <!-- Version. A development placeholder: a release takes each package's version from its own tag, and
+         tools/release/plan.py writes them into Versions.generated.props, imported below. Each package moves
+         on its own (ADR-0044) from a first version of 1.0.0 (ADR-0045). Semantic Versioning over TWO contracts
+         — what a consumer compiles against and what it reads back. Policy: ADR-0021; the table: CONTRIBUTING.md. -->
+    <Version>1.0.0-dev</Version>
 
     <!-- NuGet identity shared by every package -->
     <Authors>Sylvain AURAT</Authors>
@@ -41,6 +40,10 @@
          keep in step, and a consumer who wants one catalogue still wants to know what the vocabulary is. -->
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <!-- Present only during a release, and never committed: it carries one Version per project, selected by
+       project name, so that a ProjectReference becomes a dependency on the version that project is released at. -->
+  <Import Project="$(MSBuildThisFileDirectory)Versions.generated.props" Condition="Exists('$(MSBuildThisFileDirectory)Versions.generated.props')" />
 
   <!-- The licence travels as an SPDX expression, which is what nuget.org renders and what a consumer's
        licence scanner reads; packing the text as well would only duplicate it. -->
