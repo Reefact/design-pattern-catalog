@@ -67,8 +67,11 @@ livraison. C'est ce qui fait qu'une référence de projet devienne une dépendan
 projet est livré ; une version globale unique donnerait à chaque dépendance le numéro du paquet en cours
 d'empaquetage.
 
-Un tag doit pointer un commit de `main`, et le workflow lance les tests avant d'empaqueter. Sans clé NuGet,
-c'est une répétition à blanc : on peut donc l'exercer avant qu'une clé existe.
+Un tag doit pointer un commit de `main`, et le workflow lance les tests avant d'empaqueter. Un tag poussé
+publie pour de bon et échoue aussitôt sans clé NuGet, parce que le tag reste dans le dépôt et que le
+planificateur lit chaque tag comme une livraison : un tag qui n'a rien publié laisserait au registre une
+version que personne ne peut installer. Une répétition se lance à la main avec le tag en entrée, et ne publie
+ni ne tague rien.
 
 ## Alternatives envisagées
 

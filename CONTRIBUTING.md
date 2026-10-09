@@ -70,8 +70,10 @@ the thing it checks would always agree with itself, and would rewrite itself to
 match exactly the template change it exists to catch (ADR-0018).
 
 Everything sits in `PublicAPI.Unshipped.txt` today because nothing has been
-published. At the first release the accumulated entries are promoted to
-`PublicAPI.Shipped.txt`.
+published. After **every** release, the entries of each package it published are promoted
+from `PublicAPI.Unshipped.txt` to `PublicAPI.Shipped.txt`, by hand, in a commit of their
+own: the shipped file is what says what consumers received, and an entry left in the
+unshipped one can be deleted without the analyzer noticing a removal.
 
 ## Versioning
 
@@ -104,14 +106,21 @@ A release is a tag, and the tag is the only input. Tag a commit of `main` once i
 | `<catalogue>-vX.Y.Z` (`gangoffour`, `reefact`, …) | that catalogue, then the meta-package at the same kind of step (patch, minor or major) the tag takes over the catalogue's previous one |
 | `all-vX.Y.Z` | the meta-package alone |
 
-The first release is `core-v1.0.0`, which publishes every package at `1.0.0`. A tag must be exactly one
-step above the previous tag of its package — the next patch, the next minor with patch `0`, or the next
+The first release is `core-v1.0.0`, which publishes every package at `1.0.0`; the first tag of any package is
+exactly `1.0.0`. A tag must be exactly one step above the previous tag of its package — the next patch, the next minor with patch `0`, or the next
 major with minor and patch `0` — and **whoever picks the number decides whether the change is breaking**,
 using the table above. `tools/release/plan.py` refuses a number that rule could not have produced.
 
-`.github/workflows/release.yml` plans the release, builds, tests and packs; it publishes only when the
-`NUGET_API_KEY` secret exists, and is a dry run otherwise. The packages a cascade moves are tagged
-afterwards, so the next release starts from the right numbers. Reasoning: ADR-0044, ADR-0045.
+`.github/workflows/release.yml` plans the release, builds, tests, packs and publishes. A pushed tag needs
+the `NUGET_API_KEY` secret and fails at once without it: a tag stays in the repository, and the planner
+reads every tag as a release, so a tag that published nothing would leave a version on record that nobody
+can install. To see what a tag would do, run the workflow by hand (*Run workflow*) with the tag as input:
+it plans, builds, tests and packs, and publishes and tags nothing.
+
+The packages a cascade moves are tagged afterwards, in one atomic push, so the next release starts from the
+right numbers. **If a release fails part way, run the workflow again on the same tag** — a package already
+pushed is skipped — rather than tagging the next number. Releases are processed one at a time, in the order
+their tags arrive. Reasoning: ADR-0044, ADR-0045.
 
 ## Enabling the commit-message hook
 

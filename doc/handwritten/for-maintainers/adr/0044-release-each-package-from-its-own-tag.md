@@ -65,8 +65,10 @@ The version is read per project, by project name, from a file the planner writes
 what makes a project reference become a dependency on the version that project is released at; a single
 global version would give every dependency the number of the package being packed.
 
-A tag must point at a commit of `main`, and the workflow runs the tests before it packs. Without a NuGet key
-it is a dry run, so it can be exercised before a key exists.
+A tag must point at a commit of `main`, and the workflow runs the tests before it packs. A pushed tag
+publishes for real and fails at once without a NuGet key, because the tag stays in the repository and the
+planner reads every tag as a release: one that published nothing would leave a version on record that nobody
+can install. A rehearsal is run by hand with the tag as input, and neither publishes nor tags anything.
 
 ## Alternatives Considered
 
