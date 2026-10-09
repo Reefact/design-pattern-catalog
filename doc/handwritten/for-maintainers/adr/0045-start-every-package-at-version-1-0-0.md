@@ -2,8 +2,9 @@
 
 🌍 🇬🇧 English (this file) · 🇫🇷 [Français](0045-start-every-package-at-version-1-0-0.fr.md)
 
-**Status:** Proposed
+**Status:** Accepted
 **Proposed:** 2026-10-09
+**Accepted:** 2026-10-09
 **Decision Makers:** Reefact
 
 ## Context
