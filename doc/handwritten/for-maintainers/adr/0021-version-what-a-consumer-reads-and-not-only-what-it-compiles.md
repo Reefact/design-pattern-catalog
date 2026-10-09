@@ -2,7 +2,7 @@
 
 🌍 🇬🇧 English (this file) · 🇫🇷 [Français](0021-version-what-a-consumer-reads-and-not-only-what-it-compiles.fr.md)
 
-**Status:** Accepted
+**Status:** Superseded by [ADR-0045](0045-start-every-package-at-version-1-0-0.md), on one clause only: that the packages stay below `1.0.0`. The rest of this record stands.
 **Proposed:** 2026-08-05
 **Accepted:** 2026-08-06
 **Decision Makers:** Reefact

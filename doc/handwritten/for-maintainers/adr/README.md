@@ -32,6 +32,10 @@ leaves the reach-back with nothing to reach. **ADR-0028 supersedes ADR-0006**, b
 once the catalogues no longer refer to one another, what each of them holds has to be
 decided without appeal to the others.
 
+A fifth, **ADR-0045 on ADR-0021**, is of another kind: it replaces a single clause (that the
+packages stay below `1.0.0`) and leaves the rest of ADR-0021 standing, which the status line of
+ADR-0021 says in so many words.
+
 A superseded record is never edited and never removed. ADR-0019 is both a superseder
 and superseded, which is what the chain should look like: each record says what was
 believed when it was written.
@@ -153,7 +157,7 @@ Related ADRs, sources, catalog entries, code.
 | [ADR-0018](0018-hold-the-public-surface-to-a-committed-baseline.md) | Hold the public surface to a committed baseline | Accepted |
 | [ADR-0019](0019-stop-the-identity-climb-at-the-pattern-boundary.md) | Stop the identity climb at the pattern boundary | Superseded by [ADR-0027](0027-ship-one-independent-package-per-catalogued-work.md) |
 | [ADR-0020](0020-cover-a-generated-shape-with-fixtures-not-a-catalog-entry.md) | Cover a generated shape with fixtures, not with a catalog entry | Accepted |
-| [ADR-0021](0021-version-what-a-consumer-reads-and-not-only-what-it-compiles.md) | Version what a consumer reads, and not only what it compiles | Accepted |
+| [ADR-0021](0021-version-what-a-consumer-reads-and-not-only-what-it-compiles.md) | Version what a consumer reads, and not only what it compiles | Superseded by [ADR-0045](0045-start-every-package-at-version-1-0-0.md), on one clause only |
 | [ADR-0022](0022-admit-a-pattern-of-test-design-to-the-catalog.md) | Admit a pattern of test design to the catalog | Accepted |
 | [ADR-0023](0023-admit-an-anti-pattern-on-the-same-terms-as-any-pattern.md) | Admit an anti-pattern on the same terms as any pattern | Accepted |
 | [ADR-0024](0024-admit-a-model-of-the-business-to-the-catalog.md) | Admit a model of the business to the catalog | Accepted |

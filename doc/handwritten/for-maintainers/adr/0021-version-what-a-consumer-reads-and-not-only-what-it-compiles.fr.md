@@ -2,7 +2,7 @@
 
 🌍 🇬🇧 [English](0021-version-what-a-consumer-reads-and-not-only-what-it-compiles.md) · 🇫🇷 Français (ce fichier)
 
-**Statut :** Accepté
+**Statut :** Remplacé par l'[ADR-0045](0045-start-every-package-at-version-1-0-0.fr.md), sur une seule clause : que les paquets restent sous `1.0.0`. Le reste de ce record tient.
 **Proposé :** 2026-08-05
 **Accepté :** 2026-08-06
 **Décideurs :** Reefact
