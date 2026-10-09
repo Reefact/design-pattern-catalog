@@ -2,8 +2,9 @@
 
 🌍 🇬🇧 [English](0045-start-every-package-at-version-1-0-0.md) · 🇫🇷 Français (ce fichier)
 
-**Statut :** Proposé
+**Statut :** Accepté
 **Proposé :** 2026-10-09
+**Accepté :** 2026-10-09
 **Décideurs :** Reefact
 
 ## Contexte

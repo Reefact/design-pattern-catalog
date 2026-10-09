@@ -2,8 +2,9 @@
 
 🌍 🇬🇧 English (this file) · 🇫🇷 [Français](0044-release-each-package-from-its-own-tag.fr.md)
 
-**Status:** Proposed
+**Status:** Accepted
 **Proposed:** 2026-10-09
+**Accepted:** 2026-10-09
 **Decision Makers:** Reefact
 
 ## Context
