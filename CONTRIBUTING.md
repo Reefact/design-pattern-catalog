@@ -80,10 +80,8 @@ consumer compiles against, and what it reads back. The attributes carry no
 behaviour and the libraries ship no reader, so a change can leave the public
 surface byte-identical and still change every consumer's answers.
 
-**One version number for all of them.** ADR-0027 splits the catalogues into
-independent packages and prescribes releasing them in lockstep at first: loosening
-that later is easy, and tightening it later is not. It lives in
-`build/Packaging.props`.
+**One version per package.** Each package is released from its own tag and moves on its own
+(ADR-0044); the first version of every package is `1.0.0` (ADR-0045).
 
 | | |
 |---|---|
@@ -96,11 +94,24 @@ that one pattern narrows another — reads as an editorial remark and is in fact
 change to what `IdentityOf` answers for annotations already written. **A reading
 rule** reads as documentation and is what consumers copy.
 
-The version is below `1.0.0` and stays there until no catalogued pattern is
-expected to move catalog: a pattern sits in `Idioms` because no body of work
-claims it yet, and the day one does it changes namespace and package both. Below `1.0.0` the table
-applies one step down — a breaking change moves the minor, everything else the
-patch. Reasoning: ADR-0021.
+## Releasing
+
+A release is a tag, and the tag is the only input. Tag a commit of `main` once its CI is green:
+
+| Tag | Publishes |
+|---|---|
+| `core-vX.Y.Z` | `Core` at `X.Y.Z`, then **every** catalogue and the meta-package, each from its own last version: the next major when `Core` took a major step, the next patch otherwise |
+| `<catalogue>-vX.Y.Z` (`gangoffour`, `reefact`, …) | that catalogue, then the meta-package at the same kind of step (patch, minor or major) the tag takes over the catalogue's previous one |
+| `all-vX.Y.Z` | the meta-package alone |
+
+The first release is `core-v1.0.0`, which publishes every package at `1.0.0`. A tag must be exactly one
+step above the previous tag of its package — the next patch, the next minor with patch `0`, or the next
+major with minor and patch `0` — and **whoever picks the number decides whether the change is breaking**,
+using the table above. `tools/release/plan.py` refuses a number that rule could not have produced.
+
+`.github/workflows/release.yml` plans the release, builds, tests and packs; it publishes only when the
+`NUGET_API_KEY` secret exists, and is a dry run otherwise. The packages a cascade moves are tagged
+afterwards, so the next release starts from the right numbers. Reasoning: ADR-0044, ADR-0045.
 
 ## Enabling the commit-message hook
 

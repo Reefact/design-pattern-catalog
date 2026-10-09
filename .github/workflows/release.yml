@@ -1,0 +1,121 @@
+name: release
+
+# A release is a tag, and the tag is the only input (ADR-0044): `core-vX.Y.Z` releases Core and then every
+# other package, `<catalogue>-vX.Y.Z` releases that catalogue and the meta-package, `all-vX.Y.Z` releases the
+# meta-package alone. tools/release/plan.py turns the tag into the list of packages and their versions, and
+# refuses a number that cannot be one step above the previous tag of the same package.
+on:
+  push:
+    tags:
+      - '*-v[0-9]*'
+
+# Several tags pushed together must not publish at once: the second one plans from tags the first has yet to
+# create. They queue instead.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+
+jobs:
+  release:
+    name: Release ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Creating the tags of the packages a cascade releases is the one write this workflow makes.
+    permissions:
+      contents: write
+    steps:
+      # The planner reads every existing tag, so the whole history comes down.
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+
+      # A tag can be pushed from any branch. What ships must be what main holds, and what main holds has
+      # already passed the checks of ci.yml.
+      - name: Check the tag is on main
+        run: |
+          git fetch --no-tags origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::$GITHUB_REF_NAME does not point at a commit of main"
+            exit 1
+          fi
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Plan the release
+        run: |
+          python3 -m unittest discover -s tools/release
+          python3 tools/release/plan.py --tag "$GITHUB_REF_NAME" --props build/Versions.generated.props --plan plan.json
+          cat build/Versions.generated.props
+
+      - name: Restore
+        run: dotnet restore DesignPatternCatalog.sln
+
+      - name: Build
+        run: dotnet build DesignPatternCatalog.sln -c Release --no-restore
+
+      - name: Test
+        run: dotnet test DesignPatternCatalog.sln -c Release --no-build
+
+      # The whole solution is packed, so every package carries its own version and its dependencies resolve to
+      # the versions in plan.json; only the packages the plan names are pushed.
+      - name: Pack
+        run: dotnet pack DesignPatternCatalog.sln -c Release --no-build -o artifacts/packages
+
+      # Without a key this is a dry run: everything above has run, nothing leaves the runner. That is also what
+      # lets this workflow be exercised before a key exists.
+      - name: Publish
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess, sys
+
+          plan = json.load(open("plan.json"))
+          key = os.environ.get("NUGET_API_KEY", "")
+          failed = False
+
+          # Dependencies first: the plan is ordered Core, the catalogues, then the meta-package.
+          for entry in plan["publish"]:
+              package = f"artifacts/packages/{entry['package']}.{entry['version']}.nupkg"
+              if not os.path.exists(package):
+                  print(f"::error::{package} was not produced")
+                  failed = True
+                  continue
+              if not key:
+                  print(f"dry run: would push {package}")
+                  continue
+              result = subprocess.run(["dotnet", "nuget", "push", package, "--api-key", key,
+                                       "--source", "https://api.nuget.org/v3/index.json", "--skip-duplicate"])
+              failed = failed or result.returncode != 0
+
+          sys.exit(1 if failed else 0)
+          PY
+
+      # The tags a cascade releases are created once the packages are out, so a failed push leaves the next
+      # run planning from the same tags and trying again.
+      - name: Tag the packages this release moved
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "dry run: would create $(python3 -c "import json; print(' '.join(json.load(open('plan.json'))['tagsToCreate']) or 'no tag')")"
+            exit 0
+          fi
+          for tag in $(python3 -c "import json; print(' '.join(json.load(open('plan.json'))['tagsToCreate']))"); do
+            git tag "$tag"
+            git push origin "$tag"
+          done

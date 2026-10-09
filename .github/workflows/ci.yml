@@ -122,6 +122,11 @@ jobs:
       - name: Validate the catalog
         run: python3 tools/catalog/validate.py
 
+      # The release planner decides which packages a tag publishes and at which version (ADR-0044). It runs
+      # for real only at release time, so its rules are exercised here, on every pull request.
+      - name: Test the release planner
+        run: python3 -m unittest discover -s tools/release
+
       # ADR-0002 states that regenerating an unchanged catalog leaves the working
       # tree clean. That invariant is what keeps the data and the sources from
       # diverging, and it is the only thing standing between the repository and a
