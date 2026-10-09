@@ -2,8 +2,9 @@
 
 🌍 🇬🇧 [English](0042-admit-a-catalogue-for-the-maintainers-own-patterns.md) · 🇫🇷 Français (ce fichier)
 
-**Statut :** Proposé
+**Statut :** Accepté
 **Proposé :** 2026-10-08
+**Accepté :** 2026-10-09
 **Décideurs :** Reefact
 
 ## Contexte

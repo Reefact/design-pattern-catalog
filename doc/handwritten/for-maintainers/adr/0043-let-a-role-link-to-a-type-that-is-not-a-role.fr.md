@@ -2,8 +2,9 @@
 
 🌍 🇬🇧 [English](0043-let-a-role-link-to-a-type-that-is-not-a-role.md) · 🇫🇷 Français (ce fichier)
 
-**Statut :** Proposé
+**Statut :** Accepté
 **Proposé :** 2026-10-08
+**Accepté :** 2026-10-09
 **Décideurs :** Reefact
 
 ## Contexte
