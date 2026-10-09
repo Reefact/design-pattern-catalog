@@ -29,9 +29,10 @@ class FirstRelease(unittest.TestCase):
         self.assertEqual(["core", "gangoffour", "reefact", "all"], [e["prefix"] for e in result["publish"]])
         self.assertEqual(["gangoffour-v1.0.0", "reefact-v1.0.0", "all-v1.0.0"], result["tagsToCreate"])
 
-    def test_the_first_tag_of_a_package_is_at_least_one_zero_zero(self):
-        with self.assertRaises(release.PlanError):
-            release.plan("core-v0.9.0", ["core-v0.9.0"], PACKAGES)
+    def test_the_first_tag_of_a_package_is_exactly_one_zero_zero(self):
+        for tag in ("core-v0.9.0", "core-v1.0.1", "core-v2.0.0"):
+            with self.assertRaises(release.PlanError, msg=tag):
+                release.plan(tag, [tag], PACKAGES)
 
     def test_a_catalogue_cannot_start_the_release_while_the_meta_package_does_not_exist(self):
         with self.assertRaises(release.PlanError):
@@ -122,7 +123,7 @@ class Refusals(unittest.TestCase):
             release.plan("nonesuch-v1.0.0", FIRST + ["nonesuch-v1.0.0"], PACKAGES)
 
     def test_a_pre_release_or_a_malformed_tag_is_refused(self):
-        for tag in ("core-v1.0.0-rc1", "core-1.0.0", "v1.0.0", "Core-v1.0.0"):
+        for tag in ("core-v1.0.0-rc1", "core-1.0.0", "v1.0.0", "Core-v1.0.0", "core-v01.0.0", "core-v1.00.0", "core-v1.0.00"):
             with self.assertRaises(release.PlanError, msg=tag):
                 release.parse_tag(tag)
 

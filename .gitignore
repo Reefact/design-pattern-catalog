@@ -34,3 +34,7 @@ Thumbs.db
 
 ## Written by tools/release/plan.py for one release (ADR-0044)
 build/Versions.generated.props
+
+## Python bytecode (ci.yml and the release workflow import the tools' modules)
+__pycache__/
+*.pyc

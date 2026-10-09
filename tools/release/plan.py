@@ -15,7 +15,7 @@ which packages are published, and at which version, follows from it and from the
 * `all-vX.Y.Z` publishes the meta-package alone.
 
 A tag must be exactly one step above the previous tag of its package — the next patch, the next minor with
-patch 0, or the next major with minor and patch 0 — and the first tag of a package is at least 1.0.0. The
+patch 0, or the next major with minor and patch 0 — and the first tag of a package is exactly 1.0.0. The
 decision that a change is breaking is made by whoever chooses the number; this script only refuses a number
 that cannot have been chosen by that rule.
 
@@ -36,7 +36,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 NS = "DesignPatternCatalog"
 
-TAG = re.compile(r"^(?P<prefix>[a-z0-9]+)-v(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)$")
+# A component is 0 or a number without a leading zero (SemVer item 2), so one release cannot be spelled two ways.
+NUMBER = r"(0|[1-9]\d*)"
+TAG = re.compile(rf"^(?P<prefix>[a-z0-9]+)-v(?P<major>{NUMBER})\.(?P<minor>{NUMBER})\.(?P<patch>{NUMBER})$")
 
 
 class PlanError(Exception):
@@ -107,8 +109,8 @@ def plan(tag, tags, packages):
     previous = others[-1] if others else None
 
     if previous is None:
-        if version < (1, 0, 0):
-            raise PlanError(f"the first release of '{prefix}' is at least 1.0.0, not {text(version)}")
+        if version != (1, 0, 0):
+            raise PlanError(f"the first release of '{prefix}' is 1.0.0, not {text(version)} (ADR-0045)")
         level = None
     else:
         level = level_of(previous, version)

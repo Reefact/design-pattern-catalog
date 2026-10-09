@@ -4,15 +4,28 @@ name: release
 # other package, `<catalogue>-vX.Y.Z` releases that catalogue and the meta-package, `all-vX.Y.Z` releases the
 # meta-package alone. tools/release/plan.py turns the tag into the list of packages and their versions, and
 # refuses a number that cannot be one step above the previous tag of the same package.
+#
+# A pushed tag publishes for real and needs the NUGET_API_KEY secret: a tag stays in the repository, and the
+# planner reads every existing tag as a release, so a tag that published nothing would leave a version on
+# record that nobody can install. To see what a tag would do, run this workflow by hand (workflow_dispatch)
+# with the tag as its input: it plans, builds, tests and packs, and neither publishes nor tags anything.
 on:
   push:
     tags:
       - '*-v[0-9]*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to rehearse, for example core-v1.0.0. Nothing is published or tagged.'
+        required: true
+        type: string
 
-# Several tags pushed together must not publish at once: the second one plans from tags the first has yet to
-# create. They queue instead.
+# Release tags are processed one at a time, in order. By default GitHub keeps ONE pending run per group and
+# cancels an older pending one when another arrives; a cancelled tag would stay in the history as a release
+# that never happened, so every pending run is kept.
 concurrency:
   group: release
+  queue: max
   cancel-in-progress: false
 
 permissions:
@@ -22,16 +35,29 @@ env:
   DOTNET_NOLOGO: 'true'
   DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+  RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+  REHEARSAL: ${{ github.event_name == 'workflow_dispatch' }}
 
 jobs:
   release:
-    name: Release ${{ github.ref_name }}
+    name: Release ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     # Creating the tags of the packages a cascade releases is the one write this workflow makes.
     permissions:
       contents: write
     steps:
+      # Refuse before doing any work: see the comment on the triggers.
+      - name: Require the NuGet key for a pushed tag
+        if: ${{ github.event_name == 'push' }}
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "::error::$RELEASE_TAG would publish nothing: the NUGET_API_KEY secret is not set. Delete the tag, set the secret, and push it again. To rehearse a release, run this workflow by hand with the tag as input."
+            exit 1
+          fi
+
       # The planner reads every existing tag, so the whole history comes down.
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -39,12 +65,13 @@ jobs:
           fetch-depth: 0
 
       # A tag can be pushed from any branch. What ships must be what main holds, and what main holds has
-      # already passed the checks of ci.yml.
+      # already passed the checks of ci.yml. A rehearsal may run from any branch.
       - name: Check the tag is on main
+        if: ${{ github.event_name == 'push' }}
         run: |
           git fetch --no-tags origin main
           if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
-            echo "::error::$GITHUB_REF_NAME does not point at a commit of main"
+            echo "::error::$RELEASE_TAG does not point at a commit of main"
             exit 1
           fi
 
@@ -58,7 +85,7 @@ jobs:
       - name: Plan the release
         run: |
           python3 -m unittest discover -s tools/release
-          python3 tools/release/plan.py --tag "$GITHUB_REF_NAME" --props build/Versions.generated.props --plan plan.json
+          python3 tools/release/plan.py --tag "$RELEASE_TAG" --props build/Versions.generated.props --plan plan.json
           cat build/Versions.generated.props
 
       - name: Restore
@@ -75,8 +102,6 @@ jobs:
       - name: Pack
         run: dotnet pack DesignPatternCatalog.sln -c Release --no-build -o artifacts/packages
 
-      # Without a key this is a dry run: everything above has run, nothing leaves the runner. That is also what
-      # lets this workflow be exercised before a key exists.
       - name: Publish
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
@@ -85,37 +110,44 @@ jobs:
           import json, os, subprocess, sys
 
           plan = json.load(open("plan.json"))
+          rehearsal = os.environ["REHEARSAL"] == "true"
           key = os.environ.get("NUGET_API_KEY", "")
-          failed = False
 
-          # Dependencies first: the plan is ordered Core, the catalogues, then the meta-package.
+          # Dependencies first: the plan is ordered Core, the catalogues, then the meta-package. The first
+          # failure stops everything after it, because a later package would depend on a version that is
+          # not on the feed, and a published version cannot be replaced. Running the workflow again resumes:
+          # a package already pushed is skipped.
           for entry in plan["publish"]:
               package = f"artifacts/packages/{entry['package']}.{entry['version']}.nupkg"
               if not os.path.exists(package):
                   print(f"::error::{package} was not produced")
-                  failed = True
-                  continue
-              if not key:
-                  print(f"dry run: would push {package}")
+                  sys.exit(1)
+              if rehearsal:
+                  print(f"rehearsal: would push {package}")
                   continue
               result = subprocess.run(["dotnet", "nuget", "push", package, "--api-key", key,
                                        "--source", "https://api.nuget.org/v3/index.json", "--skip-duplicate"])
-              failed = failed or result.returncode != 0
-
-          sys.exit(1 if failed else 0)
+              if result.returncode != 0:
+                  print(f"::error::pushing {package} failed; the packages after it were not pushed")
+                  sys.exit(1)
           PY
 
-      # The tags a cascade releases are created once the packages are out, so a failed push leaves the next
-      # run planning from the same tags and trying again.
+      # The tags a cascade releases are created once every package is out, so a failed publication leaves the
+      # next run planning from the same tags. They go up in one atomic push: either all of them record the
+      # release or none does, never a few.
       - name: Tag the packages this release moved
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
-          if [ -z "$NUGET_API_KEY" ]; then
-            echo "dry run: would create $(python3 -c "import json; print(' '.join(json.load(open('plan.json'))['tagsToCreate']) or 'no tag')")"
+          tags=$(python3 -c "import json; print(' '.join(json.load(open('plan.json'))['tagsToCreate']))")
+          if [ "$REHEARSAL" = "true" ]; then
+            echo "rehearsal: would create ${tags:-no tag}"
             exit 0
           fi
-          for tag in $(python3 -c "import json; print(' '.join(json.load(open('plan.json'))['tagsToCreate']))"); do
+          if [ -z "$tags" ]; then
+            exit 0
+          fi
+          refs=""
+          for tag in $tags; do
             git tag "$tag"
-            git push origin "$tag"
+            refs="$refs refs/tags/$tag"
           done
+          git push --atomic origin $refs
