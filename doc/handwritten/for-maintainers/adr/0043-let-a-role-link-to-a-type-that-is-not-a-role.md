@@ -2,8 +2,9 @@
 
 🌍 🇬🇧 English (this file) · 🇫🇷 [Français](0043-let-a-role-link-to-a-type-that-is-not-a-role.fr.md)
 
-**Status:** Proposed
+**Status:** Accepted
 **Proposed:** 2026-10-08
+**Accepted:** 2026-10-09
 **Decision Makers:** Reefact
 
 ## Context

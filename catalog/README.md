@@ -140,7 +140,7 @@ exists to prevent, applied to catalogues rather than to decisions.
 | `MicroservicesPatterns` | 41 | 51 | **read whole** — 41 held, 11 excluded in the tables above, 1 in the held-back section, and around half the work will be excluded ([ADR-0033](../doc/handwritten/for-maintainers/adr/0033-admit-microservices-patterns-as-a-catalogue.md)) |
 | `Posa2` | 17 | 17 | **complete** — all four chapters that hold patterns, admitted by [ADR-0036](../doc/handwritten/for-maintainers/adr/0036-admit-posa2-as-a-catalogue.md) |
 | `DependencyInjection` | 11 | 14 | **complete** — the eleven [ADR-0037](../doc/handwritten/for-maintainers/adr/0037-admit-the-dependency-injection-catalogue.md) admits. Chapter 6's three are refused, one on ADR-0011 and two by decision, and four concepts named outside the catalogue sections are an open question below |
-| `Reefact` | 2 | — | **open-ended by construction** — the maintainer's own patterns, each entered with the text that presents it ([ADR-0042](../doc/handwritten/for-maintainers/adr/0042-admit-a-catalogue-for-the-maintainers-own-patterns.md), proposed) |
+| `Reefact` | 2 | — | **open-ended by construction** — the maintainer's own patterns, each entered with the text that presents it ([ADR-0042](../doc/handwritten/for-maintainers/adr/0042-admit-a-catalogue-for-the-maintainers-own-patterns.md)) |
 | `AnalysisPatterns` | 39 | — | **deliberately stopped**, and the only one that is |
 | `Idioms` | 2 | — | **never complete by construction** ([ADR-0013](../doc/handwritten/for-maintainers/adr/0013-shelve-a-pattern-without-a-body-of-work-under-idioms.md)) |
 

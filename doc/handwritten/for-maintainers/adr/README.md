@@ -174,5 +174,5 @@ Related ADRs, sources, catalog entries, code.
 | [ADR-0039](0039-name-the-attribute-base-after-what-it-marks.md) | Name the attribute base after what it marks | Accepted |
 | [ADR-0040](0040-write-the-pattern-guide-by-hand-in-both-languages.md) | Write the pattern guide by hand, in both languages | Accepted |
 | [ADR-0041](0041-hold-a-pattern-named-in-an-authors-later-reference-edition.md) | Hold a pattern named in an author's later reference edition | Proposed |
-| [ADR-0042](0042-admit-a-catalogue-for-the-maintainers-own-patterns.md) | Admit a catalogue for the maintainer's own patterns | Proposed |
-| [ADR-0043](0043-let-a-role-link-to-a-type-that-is-not-a-role.md) | Let a role link to a type that is not a role | Proposed |
+| [ADR-0042](0042-admit-a-catalogue-for-the-maintainers-own-patterns.md) | Admit a catalogue for the maintainer's own patterns | Accepted |
+| [ADR-0043](0043-let-a-role-link-to-a-type-that-is-not-a-role.md) | Let a role link to a type that is not a role | Accepted |
