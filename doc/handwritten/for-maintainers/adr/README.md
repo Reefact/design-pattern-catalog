@@ -182,3 +182,4 @@ Related ADRs, sources, catalog entries, code.
 | [ADR-0043](0043-let-a-role-link-to-a-type-that-is-not-a-role.md) | Let a role link to a type that is not a role | Accepted |
 | [ADR-0044](0044-release-each-package-from-its-own-tag.md) | Release each package from its own tag, with Core cascading | Accepted |
 | [ADR-0045](0045-start-every-package-at-version-1-0-0.md) | Start every package at version 1.0.0 | Accepted |
+| [ADR-0046](0046-publish-by-trusted-publishing-rather-than-a-stored-key.md) | Publish by trusted publishing rather than a stored key | Proposed |

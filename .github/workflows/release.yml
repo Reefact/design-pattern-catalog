@@ -5,10 +5,15 @@ name: release
 # meta-package alone. tools/release/plan.py turns the tag into the list of packages and their versions, and
 # refuses a number that cannot be one step above the previous tag of the same package.
 #
-# A pushed tag publishes for real and needs the NUGET_API_KEY secret: a tag stays in the repository, and the
-# planner reads every existing tag as a release, so a tag that published nothing would leave a version on
-# record that nobody can install. To see what a tag would do, run this workflow by hand (workflow_dispatch)
-# with the tag as its input: it plans, builds, tests and packs, and neither publishes nor tags anything.
+# Publishing uses trusted publishing (ADR-0046): the job exchanges its GitHub OIDC token for a short-lived
+# NuGet API key, so no key is stored anywhere. It needs a policy on nuget.org naming this repository and this
+# workflow file, and the NUGET_USER repository variable (CONTRIBUTING.md, *Releasing*).
+#
+# A pushed tag publishes for real. A tag stays in the repository, and the planner reads every existing tag
+# as a release, so a tag that published nothing would leave a version on record that nobody can install.
+# To see what a tag would do, run this workflow by hand (workflow_dispatch) with the tag as its input: it
+# logs in to nuget.org, plans, builds, tests and packs, and neither publishes nor tags anything. The login
+# is part of the rehearsal on purpose, since a missing policy is exactly what a rehearsal should find.
 on:
   push:
     tags:
@@ -43,21 +48,12 @@ jobs:
     name: Release ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    # Creating the tags of the packages a cascade releases is the one write this workflow makes.
     permissions:
+      # Creating the tags of the packages a cascade releases is the one write this workflow makes.
       contents: write
+      # Request a GitHub OIDC token, exchanged for a short-lived NuGet API key (trusted publishing).
+      id-token: write
     steps:
-      # Refuse before doing any work: see the comment on the triggers.
-      - name: Require the NuGet key for a pushed tag
-        if: ${{ github.event_name == 'push' }}
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: |
-          if [ -z "$NUGET_API_KEY" ]; then
-            echo "::error::$RELEASE_TAG would publish nothing: the NUGET_API_KEY secret is not set. Delete the tag, set the secret, and push it again. To rehearse a release, run this workflow by hand with the tag as input."
-            exit 1
-          fi
-
       # The planner reads every existing tag, so the whole history comes down.
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -74,6 +70,16 @@ jobs:
             echo "::error::$RELEASE_TAG does not point at a commit of main"
             exit 1
           fi
+
+      # Trusted publishing: the OIDC token is exchanged for a NuGet API key that lives one hour. It is asked
+      # for before any work so that a missing policy or NUGET_USER fails in seconds, on a pushed tag and on a
+      # rehearsal alike, rather than after the build; the whole run takes a few minutes, well inside the hour.
+      # NUGET_USER is a repository VARIABLE, not a secret: it is the public nuget.org profile name.
+      - name: NuGet login (OIDC)
+        id: nuget-login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1
+        with:
+          user: ${{ vars.NUGET_USER }}
 
       - name: Setup .NET
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
@@ -104,7 +110,7 @@ jobs:
 
       - name: Publish
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
         run: |
           python3 - <<'PY'
           import json, os, subprocess, sys

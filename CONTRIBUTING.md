@@ -111,16 +111,42 @@ exactly `1.0.0`. A tag must be exactly one step above the previous tag of its pa
 major with minor and patch `0` — and **whoever picks the number decides whether the change is breaking**,
 using the table above. `tools/release/plan.py` refuses a number that rule could not have produced.
 
-`.github/workflows/release.yml` plans the release, builds, tests, packs and publishes. A pushed tag needs
-the `NUGET_API_KEY` secret and fails at once without it: a tag stays in the repository, and the planner
-reads every tag as a release, so a tag that published nothing would leave a version on record that nobody
-can install. To see what a tag would do, run the workflow by hand (*Run workflow*) with the tag as input:
-it plans, builds, tests and packs, and publishes and tags nothing.
+`.github/workflows/release.yml` logs in to nuget.org, plans the release, builds, tests, packs and publishes.
+It publishes by **trusted publishing**: the job exchanges its GitHub identity for a NuGet API key that lives
+one hour, so no key is stored anywhere (ADR-0046). To see what a tag would do, run the workflow by hand
+(*Run workflow*) with the tag as input: it does everything but publish and tag, **including the nuget.org
+login**, so a missing setup fails the rehearsal rather than a release.
 
 The packages a cascade moves are tagged afterwards, in one atomic push, so the next release starts from the
 right numbers. **If a release fails part way, run the workflow again on the same tag** — a package already
 pushed is skipped — rather than tagging the next number. Releases are processed one at a time, in the order
 their tags arrive. Reasoning: ADR-0044, ADR-0045.
+
+### One-time setup
+
+Only the owner of the packages on nuget.org can do this, once.
+
+1. **On nuget.org**, signed in as the owner: your name → *Trusted Publishing* → add a policy.
+
+   | Field | Value |
+   | --- | --- |
+   | Package owner | the nuget.org account that will own the packages |
+   | Repository owner | `Reefact` |
+   | Repository | `design-pattern-catalog` |
+   | Workflow file | `release.yml` (the file name only, not the path) |
+   | Environment | empty — `release.yml` declares none |
+
+   The policy belongs to the repository, not to a package id. An id nobody owns yet is reserved for the
+   account by its first successful push, so check on nuget.org that no one else already holds a
+   `DesignPatternCatalog.` id before the first tag.
+2. **On GitHub**: *Settings → Secrets and variables → Actions → Variables → New repository variable*. Name
+   `NUGET_USER`, value the nuget.org **username** (the profile name, not the email). A *variable*, not a
+   secret: it is public on the profile, and a secret would only mask it in the logs. Stored as a secret,
+   `vars.NUGET_USER` is empty and the login fails with `Input required and not supplied: user`.
+3. Run the rehearsal on `core-v1.0.0` (*Actions → release → Run workflow*). Green means the policy, the
+   variable and the whole pipeline work; the first real tag can follow.
+
+Renaming `release.yml` or the repository breaks the policy: change it on nuget.org in the same breath.
 
 ## Enabling the commit-message hook
 
