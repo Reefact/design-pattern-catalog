@@ -95,7 +95,7 @@ jobs:
         run: dotnet build DesignPatternCatalog.sln -c Release --no-restore
 
       - name: Test
-        run: dotnet test DesignPatternCatalog.sln -c Release --no-build
+        run: dotnet test --solution DesignPatternCatalog.sln -c Release --no-build
 
       # The whole solution is packed, so every package carries its own version and its dependencies resolve to
       # the versions in plan.json; only the packages the plan names are pushed.
