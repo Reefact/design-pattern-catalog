@@ -8,7 +8,7 @@ covers the rest — how the repository is built, and how commits are written.
 
 ```
 dotnet build DesignPatternCatalog.sln
-dotnet test DesignPatternCatalog.sln
+dotnet test --solution DesignPatternCatalog.sln
 dotnet run --project DesignPatternCatalog.Usage
 ```
 

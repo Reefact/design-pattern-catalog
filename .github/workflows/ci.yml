@@ -77,7 +77,7 @@ jobs:
       # trip and is invisible in a diff spanning the whole catalog; this is where
       # it shows. Deferred by ADR-0016 and ADR-0018, required by ADR-0019.
       - name: Convention tests
-        run: dotnet test DesignPatternCatalog.sln -c Release --no-build
+        run: dotnet test --solution DesignPatternCatalog.sln -c Release --no-build
 
       # The whole catalog reads back through the base attribute alone — the
       # contract of ADR-0004 — which is exactly what the sample project's
